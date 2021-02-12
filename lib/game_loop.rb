@@ -6,65 +6,73 @@ class GameLoop
     @guess = []
     @answer = Sequence.new.correct_answer
     @cheat = @answer.join.upcase
+    @game_over = false
+    @guess_count = 0
+  end
+
+  def play_game
+    until @game_over == true
+      user_guess
+    end
   end
 
   def user_guess
     puts "Enter guess here"
+    print "> "
     string_guess = gets.chomp.downcase
-    game_over = false
-    until game_over == true do
 
       if string_guess == 'q' || string_guess == 'quit'
-        p 'quit'
+        p 'Thanks for playing!'
+        @game_over = true
       elsif string_guess.length == 4
-
         @guess = string_guess.split("")
         #compare_correct_amount
         #compare_amount_in_correct_place
         if @guess == @answer
-        puts "Congratulations! You guessed the sequence '#{@cheat}' in X guesses over TIME
-        Do you want to (p)lay again or (q)uit?"
-        winner_statement = gets.chomp.downcase
+          @guess_count += 1
+          puts "Congratulations! You guessed the sequence '#{@cheat}' in '#{@guess_count}' guesses over TIME
+          Do you want to (p)lay again or (q)uit?"
+          print "> "
+          winner_statement = gets.chomp.downcase
         if winner_statement == 'q' || winner_statement == 'quit'
           puts "Thanks for playing!"
-          game_over = true
+          @game_over = true
+        elsif winner_statement == 'p' || winner_statement == 'play'
+          @game_over = true
+          new_game = GameLoop.new.play_game
         end
 
         else
+          @guess_count += 1
+
           puts " '#{string_guess.upcase}' has #{compare_correct_amount} of the correct elements with #{compare_amount_in_correct_place}
           in the correct positions"
         end
 
-
-
       #remember edge cases (if the answer doesnt include rgby)
       elsif string_guess == 'c' || string_guess == 'cheat'
-
         p "'#{@cheat}' is the random sequence."
       elsif string_guess.length > 4
         p 'Answer too long'
       elsif string_guess.length < 4
         p 'Answer too short'
       end
-    end
   end
+
   def compare_amount_in_correct_place
     correct_place = 0
-    if @answer[0] == @guess[0]
-      correct_place +=1
-    end
-    if @answer[1] == @guess[1]
-      correct_place +=1
-    end
-    if @answer[2] == @guess[2]
-      correct_place +=1
-    end
-    if @answer[3] == @guess[3]
-      correct_place +=1
-    end
-
-
-
+      if @answer[0] == @guess[0]
+        correct_place +=1
+      end
+      if @answer[1] == @guess[1]
+        correct_place +=1
+      end
+      if @answer[2] == @guess[2]
+        correct_place +=1
+      end
+      if @answer[3] == @guess[3]
+        correct_place +=1
+      end
 
      correct_place
   end
@@ -157,5 +165,6 @@ class GameLoop
   #   puts "correct: #{correct.length}"
   # end
 end
-game = GameLoop.new.user_guess
+game = GameLoop.new.play_game
+
 #require "pry";binding.pry
