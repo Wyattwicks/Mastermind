@@ -14,7 +14,10 @@ class GameLoop
       p 'quit'
     elsif string_guess.length == 4
       @guess = string_guess.split("")
-      compare_guess
+      #compare_correct_amount
+      #compare_amount_in_correct_place
+      puts " '#{string_guess.upcase}' has #{compare_correct_amount} of the correct elements with #{compare_amount_in_correct_place}
+      in the correct positions"
       #remember edge cases (if the answer doesnt include rgby)
     elsif string_guess == 'c' || string_guess == 'cheat'
       p 'cheat'
@@ -23,52 +26,104 @@ class GameLoop
     elsif string_guess.length < 4
       p 'Answer too short'
     end
+
+  end
+  def compare_amount_in_correct_place
+    correct_place = 0
+    if @answer[0] == @guess[0]
+      correct_place +=1
+    end
+    if @answer[1] == @guess[1]
+      correct_place +=1
+    end
+    if @answer[2] == @guess[2]
+      correct_place +=1
+    end
+    if @answer[3] == @guess[3]
+      correct_place +=1
+    end
+
+
+
+
+     correct_place
   end
 
-  def compare_guess
+  def compare_correct_amount
+
+    answer_reds= []
+    answer_greens = []
+    answer_blues = []
+    answer_yellows = []
+
+    guess_reds= []
+    guess_greens = []
+    guess_blues = []
+    guess_yellows = []
 
     number_correct = 0
 
-     @guess.each do |guess|
-       @answer.uniq.each do |answer|
+    @answer.find_all do |answer|
+      if answer == 'r'
+        answer_reds << answer
+      elsif answer == 'g'
+        answer_greens << answer
+      elsif answer == 'b'
+        answer_blues << answer
+      elsif answer == 'y'
+        answer_yellows << answer
+      end
+    end
 
-          if guess == answer
-            number_correct += 1
-          end
-        end
+    @guess.find_all do |guess|
+      if guess == 'r'
+        guess_reds << guess
+      elsif guess == 'g'
+        guess_greens << guess
+      elsif guess == 'b'
+        guess_blues << guess
+      elsif guess == 'y'
+        guess_yellows << guess
+      end
+    end
+
+    if answer_reds.length > guess_reds.length
+      number_correct += guess_reds.length
+    elsif answer_reds.length < guess_reds.length
+      number_correct += answer_reds.length
+    else
+      number_correct += answer_reds.length
+    end
+
+    if answer_greens.length > guess_greens.length
+      number_correct += guess_greens.length
+    elsif answer_greens.length < guess_greens.length
+      number_correct += answer_greens.length
+    else
+      number_correct += answer_greens.length
+    end
+
+    if answer_blues.length > guess_blues.length
+      number_correct += guess_blues.length
+    elsif answer_blues.length < guess_blues.length
+      number_correct += answer_blues.length
+    else
+      number_correct += answer_blues.length
+    end
+
+    if answer_yellows.length > guess_yellows.length
+      number_correct += guess_yellows.length
+    elsif answer_yellows.length < guess_yellows.length
+      number_correct += answer_yellows.length
+    else
+      number_correct += answer_yellows.length
     end
 
     puts "answer: #{@answer}"
     puts "guess: #{@guess}"
-    p number_correct
-  end
 
-  # def answer_to_hash
-  #
-  #   hash_of_answers = {}
-  #   reds= []
-  #   greens = []
-  #   blues = []
-  #   yellows = []
-  #   @answer.find_all do |answer|
-  #     if answer == 'r'
-  #       reds << answer
-  #     elsif answer == 'g'
-  #       greens << answer
-  #     elsif answer == 'b'
-  #       blues << answer
-  #     elsif answer == 'y'
-  #       yellows << answer
-  #     end
-  #   end
-  #
-  #
-  #     hash_of_answers[reds[0]] = reds.length
-  #     hash_of_answers[greens[0]] = greens.length
-  #     hash_of_answers[blues[0]] = blues.length
-  #     hash_of_answers[yellows[0]] = yellows.length
-  #     p hash_of_answers
-  # end
+     number_correct
+  end
 
 end
 game = GameLoop.new.user_guess
