@@ -5,28 +5,48 @@ class GameLoop
   def initialize
     @guess = []
     @answer = Sequence.new.correct_answer
+    @cheat = @answer.join.upcase
   end
 
   def user_guess
     puts "Enter guess here"
     string_guess = gets.chomp.downcase
-    if string_guess == 'q' || string_guess == 'quit'
-      p 'quit'
-    elsif string_guess.length == 4
-      @guess = string_guess.split("")
-      #compare_correct_amount
-      #compare_amount_in_correct_place
-      puts " '#{string_guess.upcase}' has #{compare_correct_amount} of the correct elements with #{compare_amount_in_correct_place}
-      in the correct positions"
-      #remember edge cases (if the answer doesnt include rgby)
-    elsif string_guess == 'c' || string_guess == 'cheat'
-      p 'cheat'
-    elsif string_guess.length > 4
-      p 'Answer too long'
-    elsif string_guess.length < 4
-      p 'Answer too short'
-    end
+    game_over = false
+    until game_over == true do
 
+      if string_guess == 'q' || string_guess == 'quit'
+        p 'quit'
+      elsif string_guess.length == 4
+
+        @guess = string_guess.split("")
+        #compare_correct_amount
+        #compare_amount_in_correct_place
+        if @guess == @answer
+        puts "Congratulations! You guessed the sequence '#{@cheat}' in X guesses over TIME
+        Do you want to (p)lay again or (q)uit?"
+        winner_statement = gets.chomp.downcase
+        if winner_statement == 'q' || winner_statement == 'quit'
+          puts "Thanks for playing!"
+          game_over = true
+        end
+
+        else
+          puts " '#{string_guess.upcase}' has #{compare_correct_amount} of the correct elements with #{compare_amount_in_correct_place}
+          in the correct positions"
+        end
+
+
+
+      #remember edge cases (if the answer doesnt include rgby)
+      elsif string_guess == 'c' || string_guess == 'cheat'
+
+        p "'#{@cheat}' is the random sequence."
+      elsif string_guess.length > 4
+        p 'Answer too long'
+      elsif string_guess.length < 4
+        p 'Answer too short'
+      end
+    end
   end
   def compare_amount_in_correct_place
     correct_place = 0
@@ -125,6 +145,17 @@ class GameLoop
      number_correct
   end
 
+  # def winner
+  #   if @answer == @guess
+  #
+  #     puts "Congratulations! You guessed the sequence '#{@cheat}' in guesses over TIME
+  #     Do you want to (p)lay again or (q)uit?"
+  #   end
+  # end
+  # def correct_amount
+  #   correct = (@guess & @answer)
+  #   puts "correct: #{correct.length}"
+  # end
 end
 game = GameLoop.new.user_guess
 #require "pry";binding.pry
