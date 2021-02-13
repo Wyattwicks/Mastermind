@@ -69,18 +69,12 @@ class GameLoop
 
   def compare_amount_in_correct_place
     correct_place = 0
-      if @answer[0] == @guess[0]
-        correct_place +=1
+
+    @guess.zip(@answer).map do |color_guess, correct_color|
+      if color_guess == correct_color
+        correct_place += 1
       end
-      if @answer[1] == @guess[1]
-        correct_place +=1
-      end
-      if @answer[2] == @guess[2]
-        correct_place +=1
-      end
-      if @answer[3] == @guess[3]
-        correct_place +=1
-      end
+    end
 
      correct_place
   end
@@ -98,6 +92,7 @@ class GameLoop
     guess_yellows = []
 
     number_correct = 0
+
 
     @answer.find_all do |answer|
       if answer == 'r'
@@ -123,36 +118,28 @@ class GameLoop
       end
     end
 
-    if answer_reds.length > guess_reds.length
-      number_correct += guess_reds.length
-    elsif answer_reds.length < guess_reds.length
-      number_correct += answer_reds.length
-    else
-      number_correct += answer_reds.length
+    guess_reds.zip(answer_reds).map do |guess_color, answer_color|
+      if guess_color == answer_color
+        number_correct += 1
+      end
     end
 
-    if answer_greens.length > guess_greens.length
-      number_correct += guess_greens.length
-    elsif answer_greens.length < guess_greens.length
-      number_correct += answer_greens.length
-    else
-      number_correct += answer_greens.length
+    guess_greens.zip(answer_greens).map do |guess_color, answer_color|
+      if guess_color == answer_color
+        number_correct += 1
+      end
     end
 
-    if answer_blues.length > guess_blues.length
-      number_correct += guess_blues.length
-    elsif answer_blues.length < guess_blues.length
-      number_correct += answer_blues.length
-    else
-      number_correct += answer_blues.length
+    guess_blues.zip(answer_blues).map do |guess_color, answer_color|
+      if guess_color == answer_color
+        number_correct += 1
+      end
     end
 
-    if answer_yellows.length > guess_yellows.length
-      number_correct += guess_yellows.length
-    elsif answer_yellows.length < guess_yellows.length
-      number_correct += answer_yellows.length
-    else
-      number_correct += answer_yellows.length
+    guess_yellows.zip(answer_yellows).map do |guess_color, answer_color|
+      if guess_color == answer_color
+        number_correct += 1
+      end
     end
 
     puts "answer: #{@answer}"
