@@ -26,7 +26,7 @@ class GameLoop
     @guess = string_guess.split("")
 
       if string_guess == 'q' || string_guess == 'quit'
-        p 'Thanks for playing!'
+        p "Thanks for playing! Come back when you're ready to defeat the Mastermind!"
         @game_over = true
       elsif string_guess == 'c' || string_guess == 'cheat'
         p "'#{@cheat}' is the random sequence."
@@ -46,7 +46,7 @@ class GameLoop
           print "> "
           winner_statement = gets.chomp.downcase
             if winner_statement == 'q' || winner_statement == 'quit'
-              puts "Thanks for playing!"
+              puts "Thanks for playing! You successfully defeated the Mastermind!"
               @game_over = true
             elsif winner_statement == 'p' || winner_statement == 'play'
               @game_over = true
