@@ -1,4 +1,6 @@
 require './lib/sequence'
+require './lib/compare_elements'
+
 class GameLoop
   attr_reader :guess, :answer
 
@@ -19,20 +21,25 @@ class GameLoop
   end
 
   def user_guess
-    # start_time = Time.now
     puts "Enter guess here"
     print "> "
     string_guess = gets.chomp.downcase
     @guess = string_guess.split("")
+    compare = Comparison.new(@guess, @answer)
+    if @guess_count == 0
+      guess_tense = "guess"
+    else
+      guess_tense = "guesses"
+    end
 
       if string_guess == 'q' || string_guess == 'quit'
         p "Thanks for playing! Come back when you're ready to defeat the Mastermind!"
         @game_over = true
+
       elsif string_guess == 'c' || string_guess == 'cheat'
         p "'#{@cheat}' is the random sequence."
-      elsif string_guess.length == 4
-        # @guess = string_guess.split("")
 
+      elsif string_guess.length == 4
         if valid_guess?(@guess) == false
           p "Invalid response"
         elsif @guess == @answer
@@ -40,8 +47,7 @@ class GameLoop
           @guess_count += 1
           minutes = ((end_time - @start_time) / 60).to_i
           seconds = ((end_time - @start_time).to_i) - (minutes * 60)
-
-          puts "Congratulations! You guessed the sequence '#{@cheat}' in #{@guess_count} guesses over #{minutes} minutes and #{seconds} seconds
+          puts "Congratulations! You guessed the sequence '#{@cheat}' in #{@guess_count} #{guess_tense} over #{minutes} minutes and #{seconds} seconds
           Do you want to (p)lay again or (q)uit?"
           print "> "
           winner_statement = gets.chomp.downcase
@@ -52,101 +58,19 @@ class GameLoop
               @game_over = true
               new_game = GameLoop.new.play_game
             end
-
         else
           @guess_count += 1
-
-          puts " '#{string_guess.upcase}' has #{compare_correct_amount} of the correct elements with #{compare_amount_in_correct_place}
-          in the correct positions"
+          puts " '#{string_guess.upcase}' has #{compare.correct_amount?} of the correct elements with #{compare.correct_place?}
+          in the correct positions. You've taken #{@guess_count} #{guess_tense}."
         end
 
       elsif string_guess.length > 4
-        p 'Answer too long'
+        p 'Answer too long.'
       elsif string_guess.length < 4
-        p 'Answer too short'
+        p 'Answer too short.'
       end
   end
 
-  def compare_amount_in_correct_place
-    correct_place = 0
-
-    @guess.zip(@answer).map do |color_guess, correct_color|
-      if color_guess == correct_color
-        correct_place += 1
-      end
-    end
-
-     correct_place
-  end
-
-  def compare_correct_amount
-
-    answer_reds= []
-    answer_greens = []
-    answer_blues = []
-    answer_yellows = []
-
-    guess_reds= []
-    guess_greens = []
-    guess_blues = []
-    guess_yellows = []
-
-    number_correct = 0
-
-
-    @answer.find_all do |answer|
-      if answer == 'r'
-        answer_reds << answer
-      elsif answer == 'g'
-        answer_greens << answer
-      elsif answer == 'b'
-        answer_blues << answer
-      elsif answer == 'y'
-        answer_yellows << answer
-      end
-    end
-
-    @guess.find_all do |guess|
-      if guess == 'r'
-        guess_reds << guess
-      elsif guess == 'g'
-        guess_greens << guess
-      elsif guess == 'b'
-        guess_blues << guess
-      elsif guess == 'y'
-        guess_yellows << guess
-      end
-    end
-
-    guess_reds.zip(answer_reds).map do |guess_color, answer_color|
-      if guess_color == answer_color
-        number_correct += 1
-      end
-    end
-
-    guess_greens.zip(answer_greens).map do |guess_color, answer_color|
-      if guess_color == answer_color
-        number_correct += 1
-      end
-    end
-
-    guess_blues.zip(answer_blues).map do |guess_color, answer_color|
-      if guess_color == answer_color
-        number_correct += 1
-      end
-    end
-
-    guess_yellows.zip(answer_yellows).map do |guess_color, answer_color|
-      if guess_color == answer_color
-        number_correct += 1
-      end
-    end
-
-    puts "answer: #{@answer}"
-    puts "guess: #{@guess}"
-
-     number_correct
-  end
 
   def valid_guess?(guess)
     correct_colors = true
@@ -157,19 +81,4 @@ class GameLoop
     end
     correct_colors
   end
-
-  # def winner
-  #   if @answer == @guess
-  #
-  #     puts "Congratulations! You guessed the sequence '#{@cheat}' in guesses over TIME
-  #     Do you want to (p)lay again or (q)uit?"
-  #   end
-  # end
-  # def correct_amount
-  #   correct = (@guess & @answer)
-  #   puts "correct: #{correct.length}"
-  # end
 end
-# game = GameLoop.new.play_game
-
-#require "pry";binding.pry
