@@ -11,7 +11,8 @@ class TestSequence < Minitest::Test
     assert_instance_of Sequence, @sequence
   end
 
-  def test_if_produces_array_of_4_values
+  def test_it_produces_array_of_4_values
     assert_equal 4, @sequence.correct_answer.length
   end
+
 end

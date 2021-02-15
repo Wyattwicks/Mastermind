@@ -1,33 +1,89 @@
-require './lib/sequence'
-require './lib/game_loop'
-#if we make a class for the user guess add it here
+class Comparison
 
-class Compare
-  attr_reader :guess, :answer
+  def initialize(guess, answer)
+    @guess = guess
+    @answer = answer
 
-  def initialize
   end
 
-  def compare_amount_in_correct_place
-      correct_place = 0
-      if @answer[0] == @guess[0]
-        correct_place +=1
-      end
-      if @answer[1] == @guess[1]
-        correct_place +=1
-      end
-      if @answer[2] == @guess[2]
-        correct_place +=1
-      end
-      if @answer[3] == @guess[3]
-        correct_place +=1
+  def correct_place?
+    correct_place = 0
+
+    @guess.zip(@answer).map do |color_guess, correct_color|
+      if color_guess == correct_color
+        correct_place += 1
       end
     end
 
-    #this may work better for the correct amount thing.
-    def correct_amount
-      correct = (@guess & @answer)
-      puts "#{correct.length}"
+     correct_place
+  end
+
+  def correct_amount?
+
+    answer_reds= []
+    answer_greens = []
+    answer_blues = []
+    answer_yellows = []
+
+    guess_reds= []
+    guess_greens = []
+    guess_blues = []
+    guess_yellows = []
+
+    number_correct = 0
+
+
+    @answer.find_all do |answer|
+      if answer == 'r'
+        answer_reds << answer
+      elsif answer == 'g'
+        answer_greens << answer
+      elsif answer == 'b'
+        answer_blues << answer
+      elsif answer == 'y'
+        answer_yellows << answer
+      end
     end
 
+    @guess.find_all do |guess|
+      if guess == 'r'
+        guess_reds << guess
+      elsif guess == 'g'
+        guess_greens << guess
+      elsif guess == 'b'
+        guess_blues << guess
+      elsif guess == 'y'
+        guess_yellows << guess
+      end
+    end
+
+    guess_reds.zip(answer_reds).map do |guess_color, answer_color|
+      if guess_color == answer_color
+        number_correct += 1
+      end
+    end
+
+    guess_greens.zip(answer_greens).map do |guess_color, answer_color|
+      if guess_color == answer_color
+        number_correct += 1
+      end
+    end
+
+    guess_blues.zip(answer_blues).map do |guess_color, answer_color|
+      if guess_color == answer_color
+        number_correct += 1
+      end
+    end
+
+    guess_yellows.zip(answer_yellows).map do |guess_color, answer_color|
+      if guess_color == answer_color
+        number_correct += 1
+      end
+    end
+    #Make sure to delete these 2 lines
+    puts "answer: #{@answer}"
+    puts "guess: #{@guess}"
+
+     number_correct
+  end
 end
