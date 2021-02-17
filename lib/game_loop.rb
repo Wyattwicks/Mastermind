@@ -14,6 +14,8 @@ class GameLoop
   end
 
   def play_game
+    puts "I have generated a beginner sequence with four elements made up of: (r)ed,"
+    puts "(g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game."
     @start_time = Time.new
     until @game_over == true
       user_guess
@@ -21,6 +23,7 @@ class GameLoop
   end
 
   def user_guess
+    puts
     puts "Enter guess here"
     print "> "
     string_guess = gets.chomp.downcase
@@ -57,6 +60,9 @@ class GameLoop
             elsif winner_statement == 'p' || winner_statement == 'play'
               @game_over = true
               new_game = GameLoop.new.play_game
+            else
+              puts "Invalid response: GAME OVER!"
+              @game_over = true
             end
         else
           @guess_count += 1

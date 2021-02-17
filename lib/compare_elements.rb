@@ -80,10 +80,6 @@ class Comparison
         number_correct += 1
       end
     end
-    #Make sure to delete these 2 lines
-    puts "answer: #{@answer}"
-    puts "guess: #{@guess}"
-
      number_correct
   end
 end

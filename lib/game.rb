@@ -3,7 +3,7 @@ require './lib/game_loop'
 class Game
 
   def initialize
-    @game1 = GameLoop.new
+    @game = GameLoop.new
   end
 
   def start
@@ -12,17 +12,13 @@ class Game
     print "> "
     first_response = gets.chomp.downcase
     if first_response == 'p' ||  first_response =='play'
-      puts "I have generated a beginner sequence with four elements made up of: (r)ed,"
-      puts "(g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game."
-      @game1.play_game
+      @game.play_game
     elsif first_response == 'i' || first_response =='instructions'
       instructions
       second_response = gets.chomp.downcase
 
       if second_response == 'p' ||  second_response =='play'
-        puts "I have generated a beginner sequence with four elements made up of: (r)ed,"
-        puts "(g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game."
-        @game1.play_game
+        @game.play_game
       elsif second_response == 'q' ||  second_response == 'quit'
         puts "Thanks, come back when you're ready to defeat the Mastermind!"
       else
