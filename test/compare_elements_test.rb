@@ -19,5 +19,4 @@ class ComparisonTest < Minitest::Test
 
     assert_equal 3, @compare.correct_amount?
   end
-
 end

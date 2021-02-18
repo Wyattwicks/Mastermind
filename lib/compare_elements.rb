@@ -3,6 +3,7 @@ class Comparison
   def initialize(guess, answer)
     @guess = guess
     @answer = answer
+    @number_correct = 0
 
   end
 
@@ -30,8 +31,6 @@ class Comparison
     guess_blues = []
     guess_yellows = []
 
-    number_correct = 0
-
 
     @answer.find_all do |answer|
       if answer == 'r'
@@ -57,29 +56,19 @@ class Comparison
       end
     end
 
-    guess_reds.zip(answer_reds).map do |guess_color, answer_color|
-      if guess_color == answer_color
-        number_correct += 1
-      end
-    end
+    color_comparison(guess_reds, answer_reds)
+    color_comparison(guess_greens, answer_greens)
+    color_comparison(guess_blues, answer_blues)
+    color_comparison(guess_yellows, answer_yellows)
 
-    guess_greens.zip(answer_greens).map do |guess_color, answer_color|
-      if guess_color == answer_color
-        number_correct += 1
-      end
-    end
+     @number_correct
+  end
 
-    guess_blues.zip(answer_blues).map do |guess_color, answer_color|
+  def color_comparison(guess_color, answer_color)
+    guess_color.zip(answer_color).map do |guess_color, answer_color|
       if guess_color == answer_color
-        number_correct += 1
+        @number_correct += 1
       end
     end
-
-    guess_yellows.zip(answer_yellows).map do |guess_color, answer_color|
-      if guess_color == answer_color
-        number_correct += 1
-      end
-    end
-     number_correct
   end
 end
